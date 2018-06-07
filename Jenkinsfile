@@ -5,12 +5,12 @@ node {
      }
 
     String goPath = "/go/src/github.com/cjburchell/testserver-go"
-    String workspacePath =  "/data/jenkins/workspace/$(env.JOB_NAME)"
+    String workspacePath =  """/data/jenkins/workspace/${env.JOB_NAME}"""
 
     stage('Test') {
 
            echo workspacePath
-           
+
            docker.image('golang:1.8.0-alpine').inside("-v ${workspacePath}:${goPath}"){
                echo 'Vetting'
                sh """cd ${goPath} && go tool vet ."""
