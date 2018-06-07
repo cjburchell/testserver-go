@@ -25,7 +25,7 @@ func main() {
 }
 
 func handleInfo(w http.ResponseWriter, _ *http.Request) {
-	reply, _ := json.Marshal("it works V2!")
+	reply, _ := json.Marshal("it works V3!")
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(reply)
