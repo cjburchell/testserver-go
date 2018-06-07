@@ -28,8 +28,16 @@ node {
     }
 
     stage ('Push image') {
+        echo env.BRANCH_NAME
+        if (env.BRANCH_NAME == 'master') {
                    docker.withRegistry('https://390282485276.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:redpoint-ecr-credentials') {
                      docker.image("${dockerImage}").push('latest')
                    }
+        }
+        else if (env.BRANCH_NAME == 'dev'){
+            docker.withRegistry('https://390282485276.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:redpoint-ecr-credentials') {
+                docker.image("${dockerImage}").push("dev")
+            }
+        }
     }
 }
