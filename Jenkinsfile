@@ -24,7 +24,15 @@ node {
     }
 
     stage('Build image') {
-              docker.build("${dockerImage}")
+        if (env.BRANCH_NAME == 'master') {
+              docker.build("${dockerImage}").tag('latest')
+        }
+        else if (env.BRANCH_NAME == 'dev'){
+            docker.build("${dockerImage}").tag('dev')
+        }
+        else {
+            echo "not building image"
+        }
     }
 
     stage ('Push image') {
@@ -38,6 +46,9 @@ node {
             docker.withRegistry('https://390282485276.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:redpoint-ecr-credentials') {
                 docker.image("${dockerImage}").push("dev")
             }
+        }
+        else {
+            echo "not pushing image"
         }
     }
 }
