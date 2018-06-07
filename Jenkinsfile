@@ -4,13 +4,11 @@ node {
          checkout scm
      }
 
+    String dockerImage = "cjburchell/testserver"
     String goPath = "/go/src/github.com/cjburchell/testserver-go"
-    String workspacePath =  """/data/jenkins/workspace/${env.JOB_NAME}"""
+    String workspacePath =  """${env.WORKSPACE}"""
 
     stage('Test') {
-
-           echo workspacePath
-
            docker.image('golang:1.8.0-alpine').inside("-v ${workspacePath}:${goPath}"){
                echo 'Vetting'
                sh """cd ${goPath} && go tool vet ."""
@@ -26,12 +24,12 @@ node {
     }
 
     stage('Build image') {
-              docker.build("cjburchell/testserver")
+              docker.build("${dockerImage}")
     }
 
     stage ('Push image') {
                    docker.withRegistry('https://390282485276.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:redpoint-ecr-credentials') {
-                     docker.image('cjburchell/testserver').push('latest')
+                     docker.image("${dockerImage}").push('latest')
                    }
     }
 }
