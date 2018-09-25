@@ -1,54 +1,69 @@
-node {
-     stage('Clone repository') {
-         /* Let's make sure we have the repository cloned to our workspace */
-         checkout scm
-     }
+pipeline{
+    agent any
+    environment {
+            DOCKER_IMAGE = "cjburchell/testserver"
+            DOCKER_TAG = "${env.BRANCH_NAME}"
+    }
 
-    String dockerImage = "cjburchell/testserver"
-    String goPath = "/go/src/github.com/cjburchell/testserver-go"
-    String workspacePath =  """${env.WORKSPACE}"""
-
-    stage('Test') {
-           docker.image('golang:1.8.0-alpine').inside("-v ${workspacePath}:${goPath}"){
-               echo 'Vetting'
-               sh """cd ${goPath} && go tool vet ."""
-               echo 'Testing'
-               sh """cd ${goPath} && go test ."""
-              }
+    stages{
+        stage('Clone repository') {
+            steps {
+                script{
+                    slackSend color: "good", message: "Job: ${env.JOB_NAME} with build number ${env.BUILD_NUMBER} started"
+                }
+             /* Let's make sure we have the repository cloned to our workspace */
+             checkout scm
+             }
          }
 
-    stage('Build') {
-           docker.image('golang:1.8.0-alpine').inside("-v ${workspacePath}:${goPath}"){
-               sh """cd ${goPath} && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main"""
-              }
-    }
-
-    stage('Build image') {
-        if (env.BRANCH_NAME == 'master') {
-              docker.build("${dockerImage}").tag('latest')
-        }
-        else if (env.BRANCH_NAME == 'dev'){
-            docker.build("${dockerImage}").tag('dev')
-        }
-        else {
-            echo "not building image"
-        }
-    }
-
-    stage ('Push image') {
-        echo env.BRANCH_NAME
-        if (env.BRANCH_NAME == 'master') {
-                   docker.withRegistry('https://390282485276.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:redpoint-ecr-credentials') {
-                     docker.image("${dockerImage}").push('latest')
-                   }
-        }
-        else if (env.BRANCH_NAME == 'dev'){
-            docker.withRegistry('https://390282485276.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:redpoint-ecr-credentials') {
-                docker.image("${dockerImage}").push("dev")
+        stage('Build image') {
+            steps {
+                script {
+                    if( env.BRANCH_NAME == "master")
+                    {
+                        docker.build("${DOCKER_IMAGE}").tag("latest")
+                    }
+                    else {
+                        docker.build("${DOCKER_IMAGE}").tag("${DOCKER_TAG}")
+                    }
+                }
             }
         }
-        else {
-            echo "not pushing image"
+
+        stage ('Push image') {
+            steps {
+                script {
+                    docker.withRegistry('https://390282485276.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:redpoint-ecr-credentials') {
+                            if( env.BRANCH_NAME == "master")
+                            {
+                                docker.image("${DOCKER_IMAGE}").push("latest")
+                            }
+                            else {
+                                docker.image("${DOCKER_IMAGE}").push("${DOCKER_TAG}")
+                            }
+                        }
+                    }
+                }
         }
     }
+
+    post {
+                always {
+                      script{
+                          if ( currentBuild.currentResult == "SUCCESS" ) {
+                            slackSend color: "good", message: "Job: ${env.JOB_NAME} with build number ${env.BUILD_NUMBER} was successful"
+                          }
+                          else if( currentBuild.currentResult == "FAILURE" ) {
+                            slackSend color: "danger", message: "Job: ${env.JOB_NAME} with build number ${env.BUILD_NUMBER} was failed"
+                          }
+                          else if( currentBuild.currentResult == "UNSTABLE" ) {
+                            slackSend color: "warning", message: "Job: ${env.JOB_NAME} with build number ${env.BUILD_NUMBER} was unstable"
+                          }
+                          else {
+                            slackSend color: "danger", message: "Job: ${env.JOB_NAME} with build number ${env.BUILD_NUMBER} its result (${currentBuild.currentResult}) was unclear"
+                          }
+                      }
+                }
+            }
+
 }
