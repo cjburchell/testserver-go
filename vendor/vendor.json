@@ -3,16 +3,31 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "5wCo38WGUTB0bNRIHzcfs7qEizg=",
-			"path": "github.com/gorilla/handlers",
-			"revision": "350d97a79266938cd77a9192b7d995132d4e2b5b",
-			"revisionTime": "2018-10-12T15:33:34Z"
+			"checksumSHA1": "DuEyF75v9xaKXfJsCPRdHNOpGZk=",
+			"path": "github.com/davecgh/go-spew/spew",
+			"revision": ""
 		},
 		{
-			"checksumSHA1": "ygXockrx7DYmGK9kAojU/Zvbu6Y=",
+			"checksumSHA1": "UrOY9AlJnuaw7zQ+xHzhK/KpCjU=",
+			"path": "github.com/gorilla/context",
+			"revision": "51ce91d2eaddeca0ef29a71d766bb3634dadf729",
+			"revisionTime": "2018-10-12T15:35:48Z"
+		},
+		{
+			"checksumSHA1": "LxxjJ5wWRn4H7Mpt4FIf1hbF7+M=",
 			"path": "github.com/gorilla/mux",
-			"revision": "5ab525f4fb1678e197ae59401e9050fa0b6cb5fd",
-			"revisionTime": "2017-12-08T16:08:15Z"
+			"revision": "cb4698366aa625048f3b815af6a0dea8aef9280a",
+			"revisionTime": "2018-06-05T21:15:56Z"
+		},
+		{
+			"checksumSHA1": "+oyIJwPyeof36XCkY8awrNfxaNM=",
+			"path": "github.com/pmezard/go-difflib/difflib",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "5YCFabYzA1Zv/nGy35VDX5WBP4E=",
+			"path": "github.com/stretchr/testify/assert",
+			"revision": ""
 		}
 	],
 	"rootPath": "github.com/cjburchell/testserver-go"
