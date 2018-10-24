@@ -25,11 +25,10 @@ pipeline{
                             sh """cd ${PROJECT_PATH} && go list ./... | grep -v /vendor/ > projectPaths"""
                             def paths = sh returnStdout: true, script:"""awk '{printf "/go/src/%s ",\$0} END {print ""}' projectPaths"""
 
-                            def vetResults = sh returnStdout: true, script:"""go tool vet ${paths}"""
-                            writeFile file: 'vet_results.txt', text: vetResults
+                            sh """go tool vet ${paths}"""
+                            sh """golint ${paths}"""
 
-                            def lintResults = sh returnStdout: true, script:"""golint ${paths}"""
-                            writeFile file: 'lint_results.txt', text: lintResults
+                            warnings canComputeNew: true, canResolveRelativePaths: true, categoriesPattern: '', consoleParsers: [[parserName: 'Go Vet'], [parserName: 'Go Lint']], defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', messagesPattern: '', unHealthy: ''
                         }
                     }
                 }
@@ -49,6 +48,9 @@ pipeline{
                             sh """go2xunit -input test_results.txt > tests.xml"""
                             sh """cd ${PROJECT_PATH} && ls"""
 
+                            archiveArtifacts 'test_results.txt'
+                            archiveArtifacts 'tests.xml'
+                            junit allowEmptyResults: true, testResults: 'tests.xml'
                         }
                     }
                 }
@@ -87,9 +89,6 @@ pipeline{
 
     post {
         always {
-              archiveArtifacts '*results.txt'
-              archiveArtifacts 'tests.xml'
-              junit allowEmptyResults: true, testResults: 'tests.xml'
               script{
                   if ( currentBuild.currentResult == "SUCCESS" ) {
                     slackSend color: "good", message: "Job: ${env.JOB_NAME} with build number ${env.BUILD_NUMBER} was successful"
