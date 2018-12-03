@@ -8,16 +8,10 @@
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "UrOY9AlJnuaw7zQ+xHzhK/KpCjU=",
-			"path": "github.com/gorilla/context",
-			"revision": "51ce91d2eaddeca0ef29a71d766bb3634dadf729",
-			"revisionTime": "2018-10-12T15:35:48Z"
-		},
-		{
-			"checksumSHA1": "LxxjJ5wWRn4H7Mpt4FIf1hbF7+M=",
+			"checksumSHA1": "kJXWK9r2PT3f0mvfFhbtCdQx8tE=",
 			"path": "github.com/gorilla/mux",
-			"revision": "cb4698366aa625048f3b815af6a0dea8aef9280a",
-			"revisionTime": "2018-06-05T21:15:56Z"
+			"revision": "3d80bc801bb034e17cae38591335b3b1110f1c47",
+			"revisionTime": "2018-10-30T15:25:28Z"
 		},
 		{
 			"checksumSHA1": "+oyIJwPyeof36XCkY8awrNfxaNM=",
