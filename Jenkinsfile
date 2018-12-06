@@ -85,7 +85,7 @@ pipeline{
                 }
             }
         }
-        stage ('Deploy') {
+        /*stage ('Deploy') {
             when {
                 branch 'master'
             }
@@ -96,7 +96,7 @@ pipeline{
                     }
                 }
             }
-        }
+        }*/
     }
 
     post {
