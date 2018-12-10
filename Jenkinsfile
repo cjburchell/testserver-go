@@ -85,18 +85,18 @@ pipeline{
                 }
             }
         }
-        /*stage ('Deploy') {
+        stage ('Deploy') {
             when {
                 branch 'master'
             }
             steps {
                 script {
-                    docker.image('rancher/cli').inside("--env RANCHER_URL=foo --env RANCHER_ACCESS_KEY=foo --env RANCHER_SECRET_KEY=foo"){
-                        sh """"""
+                    docker.image('rancher/cli').inside("--env RANCHER_URL=${RANCHER_URL} --env RANCHER_ACCESS_KEY=${RANCHER_ACCESS_KEY} --env RANCHER_SECRET_KEY=${RANCHER_SECRET_KEY}"){
+                        sh """rancher --debug up -d --force-upgrade --pull --confirm-upgrade --stack Redpoint/testserver"""
                     }
                 }
             }
-        }*/
+        }
     }
 
     post {
