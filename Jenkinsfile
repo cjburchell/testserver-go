@@ -91,7 +91,8 @@ pipeline{
             }
             steps {
                 script {
-                    docker.image('rancher/cli').inside("--env RANCHER_URL=${RANCHER_URL} --env RANCHER_ACCESS_KEY=${RANCHER_ACCESS_KEY} --env RANCHER_SECRET_KEY=${RANCHER_SECRET_KEY}"){
+                    docker.image('rancher/cli:latest').inside("--env RANCHER_URL=${RANCHER_URL} --env RANCHER_ACCESS_KEY=${RANCHER_ACCESS_KEY} --env RANCHER_SECRET_KEY=${RANCHER_SECRET_KEY}"){
+                        sh """echo Rancher Test"""
                         sh """rancher --debug up -d --force-upgrade --pull --confirm-upgrade --stack Redpoint/testserver"""
                     }
                 }
