@@ -88,7 +88,7 @@ pipeline{
         stage ('Deploy') {
             agent {
                 docker {
-                image 'rancher/cli:latest'
+                image 'fabn/rancher-cli'
                 args '--env RANCHER_URL=${RANCHER_URL} --env RANCHER_ACCESS_KEY=${RANCHER_ACCESS_KEY} --env RANCHER_SECRET_KEY=${RANCHER_SECRET_KEY} --entrypoint='''
                  }
             }
