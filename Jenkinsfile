@@ -86,14 +86,18 @@ pipeline{
             }
         }
         stage ('Deploy') {
+            agent {
+                docker {
+                image 'rancher/cli:latest'
+                args '--env RANCHER_URL=${RANCHER_URL} --env RANCHER_ACCESS_KEY=${RANCHER_ACCESS_KEY} --env RANCHER_SECRET_KEY=${RANCHER_SECRET_KEY}'
+                 }
+            }
             when {
                 branch 'master'
             }
             steps {
                 script {
-                    docker.image('rancher/cli:latest').inside("--env RANCHER_URL=${RANCHER_URL} --env RANCHER_ACCESS_KEY=${RANCHER_ACCESS_KEY} --env RANCHER_SECRET_KEY=${RANCHER_SECRET_KEY}"){
                         sh """rancher ps"""
-                    }
                 }
             }
         }
