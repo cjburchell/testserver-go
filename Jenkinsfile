@@ -89,7 +89,7 @@ pipeline{
             agent {
                 docker {
                 image 'rancher/cli:latest'
-                args '--env RANCHER_URL=${RANCHER_URL} --env RANCHER_ACCESS_KEY=${RANCHER_ACCESS_KEY} --env RANCHER_SECRET_KEY=${RANCHER_SECRET_KEY}'
+                args '--env RANCHER_URL=${RANCHER_URL} --env RANCHER_ACCESS_KEY=${RANCHER_ACCESS_KEY} --env RANCHER_SECRET_KEY=${RANCHER_SECRET_KEY} --entrypoint='''
                  }
             }
             when {
