@@ -97,7 +97,7 @@ pipeline{
             }
             steps {
                 script {
-                        sh """rancher ps"""
+                       sh """rancher --debug up -d --force-upgrade --pull --confirm-upgrade --stack Redpoint/testserver"""
                 }
             }
         }
