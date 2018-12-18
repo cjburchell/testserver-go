@@ -8,8 +8,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func handleInfo(w http.ResponseWriter, _ *http.Request) {
-	w.WriteHeader(http.StatusOK)
+func handleInfo(writer http.ResponseWriter, _ *http.Request) {
+	writer.WriteHeader(http.StatusOK)
+	writer.Header().Set("Content-Type", "text/plain")
+	writer.Write([]byte("This is a test"))
 }
 
 func main() {
