@@ -9,8 +9,8 @@ import (
 )
 
 func handleInfo(writer http.ResponseWriter, _ *http.Request) {
-	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "text/plain")
+	writer.WriteHeader(http.StatusOK)
 	writer.Write([]byte("This is a test"))
 }
 
