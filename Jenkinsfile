@@ -3,7 +3,7 @@ pipeline{
     environment {
             DOCKER_IMAGE = "cjburchell/testserver"
             DOCKER_TAG = "${env.BRANCH_NAME}"
-            PROJECT_PATH = "/go/src/github.com/cjburchell/testserver-go"
+            PROJECT_PATH = "/code"
     }
 
     stages{
