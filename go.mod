@@ -1,4 +1,4 @@
-module testserver-go
+module github.com/cjburchell/testserver-go
 
 go 1.12
 
