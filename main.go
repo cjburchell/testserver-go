@@ -11,7 +11,10 @@ import (
 func handleInfo(writer http.ResponseWriter, _ *http.Request) {
 	writer.Header().Set("Content-Type", "text/plain")
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("This is a test"))
+	_, err := writer.Write([]byte("This is a test"))
+	if err != nil{
+		fmt.Printf("error %s", err.Error())
+	}
 }
 
 func main() {
