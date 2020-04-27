@@ -4,7 +4,6 @@ pipeline{
             DOCKER_IMAGE = "cjburchell/testserver"
             DOCKER_TAG = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
             PROJECT_PATH = "/code"
-            registry = "cjburchell/testserver"
     }
 
     parameters {
@@ -76,7 +75,7 @@ pipeline{
         stage ('Push') {
             steps {
                 script {
-                    docker.withRegistry("${registry}", 'dockerhub') {
+                    docker.withRegistry('', 'dockerhub') {
                        def image = docker.image("${DOCKER_IMAGE}")
                        image.push("${DOCKER_TAG}")
                        if( env.BRANCH_NAME == "master") {
