@@ -76,7 +76,7 @@ pipeline{
         stage ('Push') {
             steps {
                 script {
-                    docker.withRegistry('${env.registry}', 'dockerhub') {
+                    docker.withRegistry("${registry}", 'dockerhub') {
                        def image = docker.image("${DOCKER_IMAGE}")
                        image.push("${DOCKER_TAG}")
                        if( env.BRANCH_NAME == "master") {
